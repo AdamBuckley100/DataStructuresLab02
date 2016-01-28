@@ -45,138 +45,117 @@ public class TicTacToeLab02{
 
 	public static void main(String[] args) 
 	{
-		StartOrNotPopUp();
-		overallGameActions();
-	}
+			// Allocate identifiers to represent game state
+			// Using an array of int so that summing along a row, a column or a
+			// diagonal is a easy test for a win
+			//Frame frame = new JFrame("Game Of Tic-Tac-Toe");
 
-	/**
-	 * This contains the execution of the actual game itself.
-	 * This method is always called in the main method and if
-	 * a user decides to play again then this method is called again
-	 * via the gameEndOptions() method).
-	 */
-	public static void overallGameActions()
-	{
-		// Allocate identifiers to represent game state
-		// Using an array of int so that summing along a row, a column or a
-		// diagonal is a easy test for a win
-		//Frame frame = new JFrame("Game Of Tic-Tac-Toe");
+			int[][] board = new int[3][3];
 
-		int[][] board = new int[3][3];
+			//array of booleans, the 5 usable numbers for the computer.
+			boolean[] booleanArray = new boolean[5];
 
-		// Initializing variables within the main method.
-		int row = 0;
-		int col = 0;
-		int move = 0;
-		boolean boardFull;
-		int playerWon;
-		
-		//array of booleans, the 5 usable numbers for the computer.
-		boolean[] booleanArray = new boolean[5];
+			int row = 0;
+			int col = 0;
+			int move = 0;
+			boolean boardFull;
+			boolean playerWon;
 
-		// Setup graphics and draw empty board.
-		StdDraw.setPenRadius(0.04);							// draws thicker lines.
-		StdDraw.line(0, 0.33, 1, 0.33);
-		StdDraw.line(0, 0.66, 1, 0.66);
-		StdDraw.line(0.33, 0, 0.33, 1.0);
-		StdDraw.line(0.66, 0, 0.66, 1.0);
+			// Setup graphics and draw empty board
+			StdDraw.setPenRadius(0.04);							// draw thicker lines
+			StdDraw.line(0, 0.33, 1, 0.33);
+			StdDraw.line(0, 0.66, 1, 0.66);
+			StdDraw.line(0.33, 0, 0.33, 1.0);
+			StdDraw.line(0.66, 0, 0.66, 1.0);
 
-		StdDraw.setFont(new Font("SansSerif", Font.PLAIN, 64)); // Font Size: Large.
+			StdDraw.setFont(new Font("SansSerif", Font.PLAIN, 64)); // Font SIZE!
 
-		do {
-			if(move % 2 ==0)
-			{
-				System.out.println("\tHuman move ...");
+			do {
+				if(move % 2 == 1)
+				{
+					System.out.println("\tHuman move ...");
 
-				displayUserMovePrompt();
 
-				// use mouse position to get slot
-				boolean mousePressed = false;
-				do {
-					if (StdDraw.mousePressed()) {
+					displayUserMovePrompt();
 
-						col = (int) (StdDraw.mouseX() * 3);	
+					int theNumber = choicePopUp(board);
 
-						row = (int) (StdDraw.mouseY() * 3);
+					// use mouse position to get slot
+					boolean mousePressed = false;
+					do {
+						if (StdDraw.mousePressed()) {
 
-						mousePressed = true;
+							col = (int) (StdDraw.mouseX() * 3);	
+
+							row = (int) (StdDraw.mouseY() * 3);
+
+							mousePressed = true;
+						}
+					}while(!mousePressed || board[row][col] != EMPTY);
+
+					//int theNumber = 5;
+
+					board[row][col] = theNumber;   // valid move (empty slot)
+					StdDraw.setFont(new Font("SansSerif", Font.PLAIN, 20)); // Font SIZE!
+					//StdDraw.clear(0.5, 0.1, StdDraw.LIGHT_GRAY);
+					StdDraw.setFont(new Font("SansSerif", Font.PLAIN, 64)); // Font SIZE!
+				}
+				else
+				{
+					System.out.println("\tComputer move ...");
+
+					displayCompMovePrompt();
+
+					int[] pos = getEmptySquare(board);
+					row = pos[0];
+					col = pos[1];
+					StdDraw.setFont(new Font("SansSerif", Font.PLAIN, 20)); // Font SIZE!
+					StdDraw.setFont(new Font("SansSerif", Font.PLAIN, 64)); // Font SIZE!
+					board[row][col] = pickingNumberComp(booleanArray, board);   // valid move (empty slot)
+					//keep a time of 650ms for the computer to make a move
+					//(helps the player experience feel more authentic).
+					try {
+						Thread.sleep(650);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
 					}
-				}while(!mousePressed || board[row][col] != EMPTY);
-				board[row][col] = X_SHAPE;   // valid move (empty slot)
-				StdDraw.setFont(new Font("SansSerif", Font.PLAIN, 64)); // Font SIZE!
+					StdDraw.setFont(new Font("SansSerif", Font.PLAIN, 20)); // Font SIZE!
+					StdDraw.text(0.5, 0.1, "           ");
+					StdDraw.setFont(new Font("SansSerif", Font.PLAIN, 64)); // Font SIZE!
+				}
+
+				// Update screen to reflect board change
+				// move is the move number, col is the current move's column, row 
+				//is the current move's row
+				double x = col * .33 + 0.15;
+				double y = row * .33 + 0.15;
+				//Directly below: board reflecting the change: if the move int value is an even
+				//number then the user's X value position choice is reflected but it move is an
+				//odd number the computer's (random) position choice is reflected on this update.
+				StdDraw.text(x, y, String.valueOf(board[row][col]));
+				move++;
+				System.out.println(move);
+				boardFull = isBoardFull(board);
+				playerWon = hasSomebodyWon(board);
+			}while (!boardFull && !playerWon);
+
+			if (playerWon == true)
+			{
+				if (move % 2 == 1)
+				{
+					JOptionPane.showMessageDialog(null, "Game Over: You Lost");
+				}
+				else if (move % 2 == 0)
+				{
+					JOptionPane.showMessageDialog(null, "Game Over: You Won");
+				}
 			}
 			else
 			{
-				System.out.println("\tComputer move ...");
-
-				displayCompMovePrompt();
-
-				int[] ComputerToWinPositions = computerToWin(booleanArray, board);
-
-				if (ComputerToWinPositions != null)
-				{
-					row = ComputerToWinPositions[0];
-					col = ComputerToWinPositions[1];
-				}
-				else if (ComputerToWinPositions == null)
-				{	
-					int[] ComputerToBlockPositions = computerToBlock(booleanArray, board);
-					if (ComputerToBlockPositions != null)
-					{
-						row = ComputerToBlockPositions[0];
-						col = ComputerToBlockPositions[1];
-					}
-					else
-					{
-						int[] ComputerRandomPositions = getEmptySquareRandom(booleanArray, board);
-						row = ComputerRandomPositions[0];
-						col = ComputerRandomPositions[1];
-					}
-				}
-				
-				board[row][col] = O_SHAPE;   // valid move (empty slot)
-				//keep a time of 650ms for the computer to make a move
-				//(helps the player experience feel more authentic).
-				try {
-					Thread.sleep(650);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+				JOptionPane.showMessageDialog(null, "It's a Draw");
 			}
-
-			// Below: Update screen to reflect board change
-			// move is the move number, col is the current move's column, row 
-			//is the current move's row
-
-			double x = col * .33 + 0.15;
-			double y = row * .33 + 0.15;
-
-			//Directly below: board reflecting the change: if the move int value is an even
-			//number then the user's X value position choice is reflected but it move is an
-			//odd number the computer's (random) position choice is reflected on this update.
-
-			StdDraw.text(x, y, (move % 2 == 0 ? "X" : "O"));
-			move++;
-			System.out.println(move);
-			boardFull = isBoardFull(board);
-			//playerWon = hasSomeoneWon(board);
-			// Below: While the board isn't full and neither the user or the computer have won:
-		}while (!boardFull && playerWon == 0);
-
-		/*switch (playerWon) 
-		{
-		case EMPTY:
-			//JOptionPane.showMessageDialog(null, "The Game is Over: It is a draw");
-			gameEndOptions(playerWon, board);
-			break;
-		case X_SHAPE:
-			gameEndOptions(playerWon, board);
-			break;
-		case O_SHAPE:
-			gameEndOptions(playerWon, board);
-			break;
-		}*/
-	}
+			System.out.println("The Game is over");
+		}
 	
 	/**
 	 * This method allows a pop up to appear right before the very first game
