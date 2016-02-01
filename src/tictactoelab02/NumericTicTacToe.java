@@ -9,7 +9,25 @@ import java.util.Random;
 import javax.swing.JOptionPane;
 import javax.swing.JFrame;
 
-public class TicTacToeLab02{
+/**
+ * This class (with the help of the StdDraw class,) allows a user
+ * to play a game of Numeric Tic-Tac-Toe using Swing GUI. (exclusively a player
+ * vs. computer game).
+ * 
+ * The real-life player can only input  the even numbers between 1-9 on their turn
+ * and the Computer can only place the odd numbers on the board between 1-9.
+ * 
+ * The first move is an odd number being placed somewhere randomly on the board.
+ * 
+ * References: Slides from Data Structures module on Moodle & Classes.
+ * 
+ * @author Adam Buckley (Student I.D: 20062910).
+ * @version 1.
+ * @date First coded: 25/01/2016.
+ * @date Last edited: 01/02/2016.
+ */
+
+public class NumericTicTacToe{
 
 	// This flag is to control the level of debug messages generated
 	final static boolean DEBUG = true;
