@@ -141,7 +141,7 @@ public class NumericTicTacToe{
 					{
 						row = ComputerToBlockPositions[0];
 						col = ComputerToBlockPositions[1];
-						numberForCompToBlock = ComputerToBlockPositions[2];
+						//numberForCompToBlock = ComputerToBlockPositions[2];
 						board[row][col] = numberForCompToBlock;
 					}
 					else
@@ -198,18 +198,18 @@ public class NumericTicTacToe{
 		{
 			if (whichPlayerWon == -1)
 			{
-				JOptionPane.showMessageDialog(null, "Game Over: You Lost");
+				//JOptionPane.showMessageDialog(null, "Game Over: You Lost");
 				gameEndOptions(whichPlayerWon, board);
 			}
 			else if (whichPlayerWon == 1)
 			{
-				JOptionPane.showMessageDialog(null, "Game Over: You Won");
+				//JOptionPane.showMessageDialog(null, "Game Over: You Won");
 				gameEndOptions(whichPlayerWon, board);
 			}
 		}
 		else
 		{
-			JOptionPane.showMessageDialog(null, "It's a Draw");
+			//JOptionPane.showMessageDialog(null, "It's a Draw");
 			gameEndOptions(whichPlayerWon, board);
 		}
 		System.out.println("The Game is over");
@@ -666,7 +666,7 @@ public class NumericTicTacToe{
 	 * for the computer to block a real-life user win.
 	 * this method only executes if a potential win does not
 	 * exist for computer.
-	 * This method only executes if real-life user has a potential win.
+	 * This method only executes if real-life non-computer user has a potential win.
 	 * 
 	 * @param int[][] - A two dimensional int array called
 	 * board  is passed into this method as a parameter.
