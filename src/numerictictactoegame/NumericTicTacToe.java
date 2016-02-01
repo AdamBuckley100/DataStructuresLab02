@@ -43,9 +43,9 @@ public class NumericTicTacToe{
 	final static Random random = new Random();
 
 	//array of booleans, the 5 usable numbers for the computer.
-	//boolean[] booleanArray = new boolean[5];
+	boolean[] booleanArray = new boolean[5];
 
-	//boolean[] humanBooleanArray = new boolean[4];
+	boolean[] humanBooleanArray = new boolean[4];
 
 	public static void main(String[] args) 
 	{
@@ -53,12 +53,6 @@ public class NumericTicTacToe{
 		overallGameActions();
 	}
 
-	/**
-	 * This contains the execution of the actual game itself.
-	 * This method is always called in the main method and if
-	 * a user decides to play again then this method is called again
-	 * via the gameEndOptions() method).
-	 */
 	public static void overallGameActions()
 	{
 		// Allocate identifiers to represent game state
@@ -122,36 +116,45 @@ public class NumericTicTacToe{
 				System.out.println("\tComputer move ...");
 
 				displayCompMovePrompt();
-				int numberForCompToWin = 0;
-				int numberForCompToBlock = 0;
+				int numberForCompToWin;
+				int numberForCompToBlock;
 
-				int[] ComputerToWinPositions = computerToWin(booleanArray, board);;
+				int[] ComputerToWinPositions = computerToWin(booleanArray, board);
 
 				if (ComputerToWinPositions != null)
 				{
+					System.out.println("hiii1");
 					row = ComputerToWinPositions[0];
 					col = ComputerToWinPositions[1];
 					numberForCompToWin = ComputerToWinPositions[2];
 					board[row][col] = numberForCompToWin;
+					
+					booleanArray[(numberForCompToWin/2)-1] = true;
 				}
 				else if (ComputerToWinPositions == null)
 				{
+					System.out.println("hiii2");
 					int[] ComputerToBlockPositions = computerToBlock(humanBooleanArray, board);
 					if (ComputerToBlockPositions != null)
 					{
 						row = ComputerToBlockPositions[0];
 						col = ComputerToBlockPositions[1];
-						//numberForCompToBlock = ComputerToBlockPositions[2];
+						numberForCompToBlock = ComputerToBlockPositions[2];
 						board[row][col] = numberForCompToBlock;
+						
+						booleanArray[(numberForCompToBlock/2)-1] = true;
 					}
 					else
 					{
-						System.out.println("hereee");
+						System.out.println("hiii3");
 						int[] computerRandomPositions = getEmptySquare(board);
 						row = computerRandomPositions[0];
 						col = computerRandomPositions[1];
 						//numberForCompToWin = ComputerToWinPositions[2];
-						board[row][col] = pickingNumberCompRandom(booleanArray, board);   // valid move (empty slot)
+						int numberRand;
+						numberRand = pickingNumberCompRandom(booleanArray, board);
+						board[row][col] = numberRand;   // valid move (empty slot)
+						booleanArray[(numberRand-1)/2] = true;
 					}
 				}
 
@@ -198,18 +201,18 @@ public class NumericTicTacToe{
 		{
 			if (whichPlayerWon == -1)
 			{
-				//JOptionPane.showMessageDialog(null, "Game Over: You Lost");
+				JOptionPane.showMessageDialog(null, "Game Over: You Lost");
 				gameEndOptions(whichPlayerWon, board);
 			}
 			else if (whichPlayerWon == 1)
 			{
-				//JOptionPane.showMessageDialog(null, "Game Over: You Won");
+				JOptionPane.showMessageDialog(null, "Game Over: You Won");
 				gameEndOptions(whichPlayerWon, board);
 			}
 		}
 		else
 		{
-			//JOptionPane.showMessageDialog(null, "It's a Draw");
+			JOptionPane.showMessageDialog(null, "It's a Draw");
 			gameEndOptions(whichPlayerWon, board);
 		}
 		System.out.println("The Game is over");
@@ -657,7 +660,7 @@ public class NumericTicTacToe{
 		}
 		while (number % 2 == 0 || hasANumberBeenUsed(board, number));
 
-		booleanArray[(number-1)/(2)] = false;
+		//booleanArray[(number-1)/(2)] = false;
 		return number;
 	}
 
@@ -666,7 +669,7 @@ public class NumericTicTacToe{
 	 * for the computer to block a real-life user win.
 	 * this method only executes if a potential win does not
 	 * exist for computer.
-	 * This method only executes if real-life non-computer user has a potential win.
+	 * This method only executes if real-life user has a potential win.
 	 * 
 	 * @param int[][] - A two dimensional int array called
 	 * board  is passed into this method as a parameter.
@@ -679,7 +682,9 @@ public class NumericTicTacToe{
 	public static int[] computerToBlock(boolean humanBooleanArray[], int board[][])
 	{
 		{
-			// Below: because there is 4 options for the human.
+			// Below: because there is 5 options for the computer.
+			// (obviously one value in this array will already be true after the first number
+			// is placed on the board on the initial turn.
 			for (int i = 0; i < 4; i++)
 			{
 				// Below: check: if the position in the array (from 0 to 4). If the particular value in
@@ -738,9 +743,9 @@ public class NumericTicTacToe{
 				for (int col = 0; col < 3; col++)
 				{
 					// Below: check to see if exactly 1 of the squares is empty and two are occupied
-					if ((board[0][col] == 0 && board[1][col] != 0 && board[2][col] != 0)
-							|| (board[0][col] != 0 && board[1][col] == 0 && board[2][col] != 0)
-							|| (board[0][col] != 0 && board[1][col] != 0 && board[2][col] == 0))
+					if ((board[0][col] == 0 && board[1][col] != 0 && board[2][col] !=0)
+							|| (board[0][col] != 0 && board[1][col] == 0 && board[2][col] !=0)
+							|| (board[0][col] != 0 && board[1][col] != 0 && board[2][col] ==0))
 					{
 						int sum = board[0][col] + board[1][col] + board[2][col];
 
