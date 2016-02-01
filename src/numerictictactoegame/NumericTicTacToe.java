@@ -16,10 +16,11 @@ import numerictictactoegame.StdDraw;
  * of Numeric Tic-Tac-Toe using Swing GUI. (exclusively a player vs. computer game).
  * 
  * The real-life player can only input the even numbers between 1-9 on their turn
- * (there is checks to make sure of this) and the computer can only place the odd
- * numbers on the board between 1-9.
+ * (there is checks to make fully sure of this) and the computer can only place the odd
+ * numbers on the board between 1-9 (inclusive).
  * 
- * The first move is an odd number being placed somewhere randomly on the board.
+ * The first move is an odd number being placed somewhere randomly on the board
+ * (i.e. computer's turn, computer goes first).
  * 
  * In order to win the game, either the computer or the real-life player must
  * be the last user to place a number into a square where that number being
@@ -28,7 +29,7 @@ import numerictictactoegame.StdDraw;
  * 
  * References: Slides from Data Structures module on Moodle & Classes.
  * 
- * @author Adam Buckley (Student I.D: 20062910 at W.I.T).
+ * @author Adam Buckley (Student I.D: 20062910 at Waterford Institute of Technology).
  * @version 1.
  * @date First coded: 25/01/2016.
  * @date Last modified: 01/02/2016.
@@ -39,6 +40,12 @@ public class NumericTicTacToe{
 	final static int EMPTY = 0;
 	final static Random random = new Random();
 
+	/**
+	 * The main method: this method is executed on game start-up and executes the two 
+	 * methods within the main method itself.
+	 * 
+	 * @param args - String[] args
+	 */
 	public static void main(String[] args) 
 	{
 		StartOrNotPopUp();
@@ -57,7 +64,6 @@ public class NumericTicTacToe{
 		// Using an array of int so that summing along a row, a column or a
 		// diagonal is a easy test for a win
 		//Frame frame = new JFrame("Game Of Tic-Tac-Toe");
-
 		int[][] board = new int[3][3];
 
 		// array of booleans, the 5 usable numbers for the computer. The default value for a boolean (primitive) is always false.
@@ -67,6 +73,7 @@ public class NumericTicTacToe{
 		// The default value for a boolean (primitive) always is false. false = unused. true = already used on board.
 		boolean[] humanBooleanArray = new boolean[4];
 
+		// Initializing local variables inside this Game method.
 		int row = 0;
 		int col = 0;
 		int move = 0;
@@ -81,13 +88,16 @@ public class NumericTicTacToe{
 		StdDraw.line(0.33, 0, 0.33, 1.0);
 		StdDraw.line(0.66, 0, 0.66, 1.0);
 
-		StdDraw.setFont(new Font("SansSerif", Font.PLAIN, 64)); // Font SIZE!
+		StdDraw.setFont(new Font("SansSerif", Font.PLAIN, 64)); // Font size
 
 		do {
 			if(move % 2 == 1)
 			{
 				System.out.println("\tHuman move ...");
 
+				// The displayUserMovePrompt simple is the method that allows on the bottom of the game
+				// for there to be writing saying that is it the real life user's turn when it is
+				// the real-life user's turn.
 				displayUserMovePrompt();
 
 				int theNumber = choicePopUp(board);
@@ -105,18 +115,21 @@ public class NumericTicTacToe{
 					}
 				}while(!mousePressed || board[row][col] != EMPTY);
 
-				board[row][col] = theNumber;   // valid move (empty slot)
+				board[row][col] = theNumber; // valid move (empty slot)
 				humanBooleanArray[(theNumber/2)-1] = true;
-				StdDraw.setFont(new Font("SansSerif", Font.PLAIN, 20)); // Font SIZE!
-				StdDraw.setFont(new Font("SansSerif", Font.PLAIN, 64)); // Font SIZE!
 			}
 			else
 			{
 				System.out.println("\tComputer move ...");
 
+				// The displayCompMovePrompt simple is the method that allows on the bottom of the game
+				// for there to be writing saying that is it the computer's turn when it is
+				// the computer's turn.
 				displayCompMovePrompt();
-				int numberForCompToWin;
-				int numberRandBlock;
+
+				// Initializing two variables of type int that will in certain cases with assigned during the game.
+				int numberForComputerToWin;
+				int numberComputerBlocksWith;
 
 				int[] ComputerToWinPositions = computerToWin(computerBooleanArray, board);
 
@@ -124,10 +137,12 @@ public class NumericTicTacToe{
 				{
 					row = ComputerToWinPositions[0];
 					col = ComputerToWinPositions[1];
-					numberForCompToWin = ComputerToWinPositions[2];
-					board[row][col] = numberForCompToWin;
+					numberForComputerToWin = ComputerToWinPositions[2];
+					board[row][col] = numberForComputerToWin;
 
-					computerBooleanArray[(numberForCompToWin-1)/2] = true;
+					// assign the number that the computer uses to win with true boolean.
+					// (true = the number has been used).
+					computerBooleanArray[(numberForComputerToWin-1)/2] = true;
 				}
 				else if (ComputerToWinPositions == null)
 				{
@@ -136,24 +151,23 @@ public class NumericTicTacToe{
 					{
 						row = ComputerToBlockPositions[0];
 						col = ComputerToBlockPositions[1];
-						numberRandBlock = pickingNumberCompRandom(computerBooleanArray, board);
-						board[row][col] = numberRandBlock;
-						computerBooleanArray[(numberRandBlock-1)/2] = true;
+						// The number used to block the real-life user's win doesn't matter, thus
+						// the random selection below.
+						numberComputerBlocksWith = pickingComputerRandomNumber(computerBooleanArray, board);
+						board[row][col] = numberComputerBlocksWith;
+						computerBooleanArray[(numberComputerBlocksWith-1)/2] = true;
 					}
 					else
 					{
 						int[] computerRandomPositions = getEmptySquare(board);
 						row = computerRandomPositions[0];
 						col = computerRandomPositions[1];
-						int numberRand;
-						numberRand = pickingNumberCompRandom(computerBooleanArray, board);
-						board[row][col] = numberRand;   // valid move (empty slot)
-						computerBooleanArray[(numberRand-1)/2] = true;
+						int randomNumberComputer;
+						randomNumberComputer = pickingComputerRandomNumber(computerBooleanArray, board);
+						board[row][col] = randomNumberComputer;   // valid move (empty slot)
+						computerBooleanArray[(randomNumberComputer-1)/2] = true;
 					}
 				}
-
-				StdDraw.setFont(new Font("SansSerif", Font.PLAIN, 20)); // Font SIZE!
-				StdDraw.setFont(new Font("SansSerif", Font.PLAIN, 64)); // Font SIZE!
 				//keep a time of 650ms for the computer to make a move
 				//(helps the player experience feel more authentic).
 				try {
@@ -161,8 +175,6 @@ public class NumericTicTacToe{
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				StdDraw.setFont(new Font("SansSerif", Font.PLAIN, 20)); // Font SIZE!
-				StdDraw.setFont(new Font("SansSerif", Font.PLAIN, 64)); // Font SIZE!
 			}
 
 			// Update screen to reflect board change
@@ -444,7 +456,7 @@ public class NumericTicTacToe{
 		do {
 			//below: rn which is an object of type Random will generate a random
 			//number between 0 and 2 (completely inclusive) for the eventually chosen
-			//row (horizontal) and column (vertial).
+			//row (horizontal) and column (vertical).
 			row = random.nextInt(3);
 			col = random.nextInt(3);
 			//below: while that specific square is empty, an int array is returned (result)
@@ -596,7 +608,6 @@ public class NumericTicTacToe{
 						}
 					}
 				}
-
 			}
 		}
 
@@ -644,7 +655,6 @@ public class NumericTicTacToe{
 				}
 			}
 		}
-		//now diagonals must be done:
 
 		// Below: because there is 5 options for he computer.
 		// (obviously one value in this array will already be true after the first number
@@ -716,7 +726,7 @@ public class NumericTicTacToe{
 	 * @param int[][] - A two dimensional array called board is 
 	 * passed into this method.  (this is board itself as it is currently).
 	 */
-	public static int pickingNumberCompRandom(boolean[] computerBooleanArray, int[][] board)
+	public static int pickingComputerRandomNumber(boolean[] computerBooleanArray, int[][] board)
 	{
 		int number;
 
@@ -750,7 +760,6 @@ public class NumericTicTacToe{
 	 */
 	public static int[] computerToBlock(boolean humanBooleanArray[], int board[][])
 	{
-		System.out.println("we in block");
 		// Below: because there is 5 options for the computer.
 		// (obviously one value in this array will already be true after the first number
 		// is placed on the board on the initial turn.
@@ -816,8 +825,6 @@ public class NumericTicTacToe{
 							|| (board[0][col] != 0 && board[1][col] != 0 && board[2][col] ==0))
 					{
 						int sum = board[0][col] + board[1][col] + board[2][col];
-
-
 						{
 							// Below: if the two cells in question and the candidate (candidate = number 
 							// to potentially maybe be put in) equal to 15 then go within:
@@ -852,7 +859,6 @@ public class NumericTicTacToe{
 		// is placed on the board on the initial turn.
 		for (int i = 0; i < 4; i++)
 		{
-			System.out.println("start of diagonal");
 			// Below: check: if the position in the array (from 0 to 4). If the particular value in
 			// the boolean array is false (it is unused) then continue within:
 			if (!humanBooleanArray[i])
