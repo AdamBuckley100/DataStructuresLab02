@@ -117,7 +117,7 @@ public class NumericTicTacToe{
 
 				displayCompMovePrompt();
 				int numberForCompToWin;
-				int numberForCompToBlock;
+				int numberRandBlock;
 
 				int[] ComputerToWinPositions = computerToWin(booleanArray, board);
 
@@ -139,10 +139,10 @@ public class NumericTicTacToe{
 					{
 						row = ComputerToBlockPositions[0];
 						col = ComputerToBlockPositions[1];
-						numberForCompToBlock = ComputerToBlockPositions[2];
-						board[row][col] = numberForCompToBlock;
-						
-						booleanArray[(numberForCompToBlock-1)/2] = true;
+						//numberForCompToBlock = ComputerToBlockPositions[2];
+						numberRandBlock = pickingNumberCompRandom(booleanArray, board);
+						board[row][col] = numberRandBlock;
+						booleanArray[(numberRandBlock-1)/2] = true;
 					}
 					else
 					{
@@ -686,6 +686,7 @@ public class NumericTicTacToe{
 	public static int[] computerToBlock(boolean humanBooleanArray[], int board[][])
 	{
 		{
+			System.out.println("we in block");
 			// Below: because there is 5 options for the computer.
 			// (obviously one value in this array will already be true after the first number
 			// is placed on the board on the initial turn.
@@ -696,7 +697,7 @@ public class NumericTicTacToe{
 				if (!humanBooleanArray[i])
 				{
 					// Get the actual number itself;
-					int number = (i*2) + 1;
+					int number = (i*2);
 
 					for (int row = 0; row < 3; row++)
 					{
@@ -725,7 +726,7 @@ public class NumericTicTacToe{
 									col = 2;
 								}
 								// Return that specific row,col combination cause this will let the computer win
-								int[] itelligentChosenEmptySquare = {row, col, number};
+								int[] itelligentChosenEmptySquare = {row, col};
 								return itelligentChosenEmptySquare;
 							}
 						}
@@ -742,7 +743,7 @@ public class NumericTicTacToe{
 			if (!humanBooleanArray[j])
 			{
 				// Get the actual number
-				int number = (j*2) + 1;
+				int number = (j*2);
 
 				for (int col = 0; col < 3; col++)
 				{
@@ -773,7 +774,7 @@ public class NumericTicTacToe{
 									row = 2;
 								}
 								// Return that specific row,col combination cause this will let the computer win
-								int[] itelligentChosenEmptySquare = {row, col, number};
+								int[] itelligentChosenEmptySquare = {row, col};
 								return itelligentChosenEmptySquare;
 							}
 						}
@@ -795,7 +796,7 @@ public class NumericTicTacToe{
 				if (!humanBooleanArray[i])
 				{
 					// Get the actual number itself;
-					int number = (i*2) + 1;
+					int number = (i*2);
 
 					int diagonalSum = board[0][0] + board[1][1] + board[2][2];
 					int diagonalSum2 = board[0][2] + board[1][1] + board[2][0];
@@ -809,7 +810,7 @@ public class NumericTicTacToe{
 							for (int k = 0; k < 3; k++)
 								if (board[k][k] == EMPTY)
 								{
-									int[] itelligentChosenEmptySquare = {k, k, number};
+									int[] itelligentChosenEmptySquare = {k, k};
 									return itelligentChosenEmptySquare;
 								}
 						}
@@ -831,7 +832,7 @@ public class NumericTicTacToe{
 											if (board[row][col] == EMPTY)
 											{
 												// now return that empty col position
-												int[] itelligentChosenEmptySquare = {row, col, number};
+												int[] itelligentChosenEmptySquare = {row, col};
 												return itelligentChosenEmptySquare;
 											}
 										}
