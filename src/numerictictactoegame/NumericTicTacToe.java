@@ -129,7 +129,7 @@ public class NumericTicTacToe{
 					numberForCompToWin = ComputerToWinPositions[2];
 					board[row][col] = numberForCompToWin;
 					
-					booleanArray[(numberForCompToWin/2)-1] = true;
+					booleanArray[(numberForCompToWin-1)/2] = true;
 				}
 				else if (ComputerToWinPositions == null)
 				{
@@ -142,7 +142,7 @@ public class NumericTicTacToe{
 						numberForCompToBlock = ComputerToBlockPositions[2];
 						board[row][col] = numberForCompToBlock;
 						
-						booleanArray[(numberForCompToBlock/2)-1] = true;
+						booleanArray[(numberForCompToBlock-1)/2] = true;
 					}
 					else
 					{
@@ -650,6 +650,10 @@ public class NumericTicTacToe{
 		}
 	}
 
+	/**
+	 * This method simply returns a number that has
+	 * 
+	 */
 	public static int pickingNumberCompRandom(boolean[] booleanArray, int[][] board)
 	{
 		int number;
