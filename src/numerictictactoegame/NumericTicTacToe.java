@@ -3,10 +3,8 @@ package numerictictactoegame;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.Random;
-
 import javax.swing.JOptionPane;
 import javax.swing.JFrame;
-
 import numerictictactoegame.StdDraw;
 
 /**
@@ -82,7 +80,7 @@ public class NumericTicTacToe{
 		int whichPlayerWon = 0;
 
 		// Setup graphics and draw empty board
-		StdDraw.setPenRadius(0.04);							// draw thicker lines
+		StdDraw.setPenRadius(0.04); // draw thicker lines
 		StdDraw.line(0, 0.33, 1, 0.33);
 		StdDraw.line(0, 0.66, 1, 0.66);
 		StdDraw.line(0.33, 0, 0.33, 1.0);
@@ -160,14 +158,14 @@ public class NumericTicTacToe{
 					else
 					{
 						int[] computerRandomPositions = getEmptySquare(board);
-						
+
 						row = computerRandomPositions[0];
 						col = computerRandomPositions[1];
-						
+
 						int randomNumberComputer;
 						randomNumberComputer = pickingComputerRandomNumber(computerBooleanArray, board);
 						board[row][col] = randomNumberComputer;   // valid move (empty slot)
-						
+
 						// assign the number that the computer uses to win with true boolean.
 						// (true = the number has been used).
 						computerBooleanArray[(randomNumberComputer-1)/2] = true;
@@ -187,7 +185,7 @@ public class NumericTicTacToe{
 			//is the current move's row
 			double x = col * .33 + 0.15;
 			double y = row * .33 + 0.15;
-			
+
 			//Directly below: board reflecting the change: if the move int value is an even
 			//number then the user's X value position choice is reflected but it move is an
 			//odd number the computer's (random) position choice is reflected on this update.
@@ -195,7 +193,7 @@ public class NumericTicTacToe{
 			move++;
 			boardFull = isBoardFull(board);
 			playerWon = hasSomebodyWon(board);
-			
+
 			if (move % 2 == 0)
 			{
 				// Real-life player won
@@ -437,7 +435,6 @@ public class NumericTicTacToe{
 		{
 			return true;
 		}
-
 		return false;
 	}
 
@@ -516,9 +513,13 @@ public class NumericTicTacToe{
 		int number;
 		do 
 		{
-			String s = JOptionPane.showInputDialog(null, "Enter your number choice:");
+			// Below is the JOption prompt that allows a user to enter a number (with strict limitations).
+			String s = JOptionPane.showInputDialog(null, "Enter numbers 2,4,6 or 8.\nYou can use each number once.");
+			// Number is parsed in below.
 			number = Integer.parseInt(s);
 		}
+		//This whole do while loop situation effectively prevents any number other than 2,4,6 or 8
+		//from being inputted successfully, provided they have not been previously used.
 		while (number % 2 == 1 || (hasANumberBeenUsed(board, number)) || (number >= 10) || (number==0));
 
 		return number;
