@@ -40,8 +40,6 @@ public class NumericTicTacToe{
 	final static boolean DEBUG = true;
 
 	final static int EMPTY = 0;
-	final static int X_SHAPE = 1;
-	final static int O_SHAPE = -1;
 	final static Random random = new Random();
 
 	//array of booleans, the 5 usable numbers for the computer.
@@ -68,14 +66,15 @@ public class NumericTicTacToe{
 		// Note: false = unused. true = already used on board.
 		boolean[] booleanArray = new boolean[5];
 
-		boolean[] humanBooleanArray = new boolean[4];
 		// The default value for a boolean (primitive) always is false. false = unused. true = already used on board.
+		boolean[] humanBooleanArray = new boolean[4];
 
 		int row = 0;
 		int col = 0;
 		int move = 0;
 		boolean boardFull;
 		boolean playerWon;
+		int whichPlayerWon = 0;
 
 		// Setup graphics and draw empty board
 		StdDraw.setPenRadius(0.04);							// draw thicker lines
@@ -90,7 +89,6 @@ public class NumericTicTacToe{
 			if(move % 2 == 1)
 			{
 				System.out.println("\tHuman move ...");
-
 
 				displayUserMovePrompt();
 
@@ -109,11 +107,8 @@ public class NumericTicTacToe{
 					}
 				}while(!mousePressed || board[row][col] != EMPTY);
 
-				//int theNumber = 5;
-
 				board[row][col] = theNumber;   // valid move (empty slot)
 				StdDraw.setFont(new Font("SansSerif", Font.PLAIN, 20)); // Font SIZE!
-				//StdDraw.clear(0.5, 0.1, StdDraw.LIGHT_GRAY);
 				StdDraw.setFont(new Font("SansSerif", Font.PLAIN, 64)); // Font SIZE!
 			}
 			else
@@ -124,9 +119,7 @@ public class NumericTicTacToe{
 				int numberForCompToWin = 0;
 				int numberForCompToBlock = 0;
 
-				int[] ComputerToWinPositions = computerToWin(booleanArray, board);
-				//System.out.println(ComputerToWinPositions[0]);
-				//System.out.println(ComputerToWinPositions[1]);
+				int[] ComputerToWinPositions = computerToWin(booleanArray, board);;
 
 				if (ComputerToWinPositions != null)
 				{
@@ -158,7 +151,6 @@ public class NumericTicTacToe{
 
 				StdDraw.setFont(new Font("SansSerif", Font.PLAIN, 20)); // Font SIZE!
 				StdDraw.setFont(new Font("SansSerif", Font.PLAIN, 64)); // Font SIZE!
-				// RECENTLY DELETED: board[row][col] = pickingNumberCompRandom(booleanArray, board);   // valid move (empty slot)
 				//keep a time of 650ms for the computer to make a move
 				//(helps the player experience feel more authentic).
 				try {
@@ -184,22 +176,35 @@ public class NumericTicTacToe{
 			System.out.println(move);
 			boardFull = isBoardFull(board);
 			playerWon = hasSomebodyWon(board);
+			if (move % 2 == 0)
+			{
+				// player won
+				whichPlayerWon = 1;
+			}
+			else if (move % 2 == 1)
+			{
+				// computer won
+				whichPlayerWon = -1;
+			}
 		}while (!boardFull && !playerWon);
 
 		if (playerWon == true)
 		{
-			if (move % 2 == 1)
+			if (whichPlayerWon == -1)
 			{
 				JOptionPane.showMessageDialog(null, "Game Over: You Lost");
+				gameEndOptions(whichPlayerWon, board);
 			}
-			else if (move % 2 == 0)
+			else if (whichPlayerWon == 1)
 			{
 				JOptionPane.showMessageDialog(null, "Game Over: You Won");
+				gameEndOptions(whichPlayerWon, board);
 			}
 		}
 		else
 		{
 			JOptionPane.showMessageDialog(null, "It's a Draw");
+			gameEndOptions(whichPlayerWon, board);
 		}
 		System.out.println("The Game is over");
 	}
@@ -226,6 +231,125 @@ public class NumericTicTacToe{
 		if (i != 0)
 		{
 			System.exit(0);
+		}
+	}
+
+	/**
+	 * This method clears all the board positions for the 
+	 * start of a brand new game when a game was played 
+	 * immediately before the brand new game.
+	 * 
+	 * @param int[][] - A two dimensional array called board is 
+	 * passed into this method.  (this is board itself as it is currently).
+	 */
+	private static void clear(int[][] board)
+	{
+		for (int col = 0; col < 3; col++)
+		{
+			for (int row = 0; row < 3; row++)
+			{
+				double x = col * .33 + 0.15;
+				double y = row * .33 + 0.15;
+
+				if (board[row][col] != EMPTY || board[row][col] != EMPTY)
+				{
+					// Below: the clear each cell, pen colour is changed to white, a
+					// filled white square is placed over the previous cells' areas.
+					StdDraw.setPenColor(Color.WHITE);
+					StdDraw.filledSquare(x, y, 0.08);
+				}
+				// Below: sets pen colour back to black.
+				StdDraw.setPenColor();
+			}
+		}		
+	}
+
+	/**
+	 * This method allows a pop up to appear the end of each Tic-Tac-Toe game.
+	 * The user is given an option to play again (yes button clicked) or not play again
+	 * (either no or cancel buttons being clicked).
+	 * 
+	 * Note: A different pop-up window pops up based on whether the player won
+	 * the game, lost the game or the game being a draw
+	 * 
+	 * @param int - An int value that showcases if the user won the game (1),
+	 * lost the game (-1) or the game was a draw (0), is passed into the method.
+	 * 
+	 * @param int[][] - A two dimensional int array called
+	 * board  is passed into this method as a parameter.
+	 */
+	public static void gameEndOptions(int whichPlayerWon, int[][] board)
+	{
+
+		final JFrame frame = new JFrame("JOptionPane Demo");
+		if (whichPlayerWon == 0)
+		{
+			int i = JOptionPane.showOptionDialog(frame,
+					"It's a Draw!.. Do You Want To Play The Game Again?",
+					"Tic-Tac-Toe: Video Game",
+					JOptionPane.YES_NO_CANCEL_OPTION,
+					JOptionPane.INFORMATION_MESSAGE, // icon
+					null,
+					null,
+					null);
+
+			// Code directly below: if my i int is equals to 0 (user click user action) then the game 
+			// does not terminate. However if i is not equals to 0 then the game does terminate.
+			if (i == 0)
+			{
+				clear(board);
+				overallGameActions();
+			}
+			else
+			{
+				System.exit(0);
+			}
+		}
+		else if (whichPlayerWon == -1)
+		{
+			int i = JOptionPane.showOptionDialog(frame,
+					"You Lost.. Do You Want To Try Again?",
+					"Tic-Tac-Toe: Video Game",
+					JOptionPane.YES_NO_CANCEL_OPTION,
+					JOptionPane.INFORMATION_MESSAGE, // icon
+					null,
+					null,
+					null);
+
+			// Code directly below: if my i int is equals to 0 (user click user action) then the game 
+			// does not terminate. However if i is not equals to 0 then the game does terminate.
+			if (i == 0)
+			{
+				clear(board);
+				overallGameActions();
+			}
+			else
+			{
+				System.exit(0);
+			}
+		}
+		else if (whichPlayerWon == 1)
+		{
+			int i = JOptionPane.showOptionDialog(frame,
+					"You Win! Do You Want To Play The Game Again?",
+					"Tic-Tac-Toe: Video Game",
+					JOptionPane.YES_NO_CANCEL_OPTION,
+					JOptionPane.INFORMATION_MESSAGE, // icon
+					null,
+					null,
+					null);
+
+			// Code directly below: if my i int is equals to 0 (user click user action) then the game 
+			// does not terminate. However if i is not equals to 0 then the game does terminate.
+			if (i == 0)
+			{
+				clear(board);
+				overallGameActions();
+			}
+			else
+			{
+				System.exit(0);
+			}
 		}
 	}
 
