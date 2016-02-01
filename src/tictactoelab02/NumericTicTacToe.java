@@ -10,14 +10,18 @@ import javax.swing.JOptionPane;
 import javax.swing.JFrame;
 
 /**
- * This class (with the help of the StdDraw class,) allows a user
- * to play a game of Numeric Tic-Tac-Toe using Swing GUI. (exclusively a player
- * vs. computer game).
+ * This class (with the help of the StdDraw class,) allows a user to play a game
+ * of Numeric Tic-Tac-Toe using Swing GUI. (exclusively a player vs. computer game).
  * 
- * The real-life player can only input  the even numbers between 1-9 on their turn
- * and the Computer can only place the odd numbers on the board between 1-9.
+ * The real-life player can only input the even numbers between 1-9 on their turn
+ * and the computer can only place the odd numbers on the board between 1-9.
  * 
  * The first move is an odd number being placed somewhere randomly on the board.
+ * 
+ * In order to win the game, either the computer or the real-life player must
+ * be the last user to place a number into a square where that number being
+ * added to the two other numbers in a straight line of that chosen square add up
+ * to 15. (this can be a diagonal straight line as well).
  * 
  * References: Slides from Data Structures module on Moodle & Classes.
  * 
@@ -516,7 +520,22 @@ public class NumericTicTacToe{
 		booleanArray[(number-1)/(2)] = false;
 		return number;
 	}
-
+	
+	/**
+	 * This method returns a position for a square
+	 * for the computer to block a real-life user win.
+	 * this method only executes if a potential win does not
+	 * exist for computer.
+	 * This method only executes if real-life user has a potential win.
+	 * 
+	 * @param int[][] - A two dimensional int array called
+	 * board  is passed into this method as a parameter.
+	 * (this is board itself as it is currently).
+	 * 
+	 * @return int[] int array - Returns an int array, position
+	 * 0 gets the row value and position 1 gets the column value and
+	 * postion 2 gets the number 
+	 */
 	public static int[] computerToBlock(boolean humanBooleanArray[], int board[][])
 	{
 		{
