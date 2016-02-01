@@ -46,7 +46,7 @@ public class NumericTicTacToe{
 	 */
 	public static void main(String[] args) 
 	{
-		StartOrNotPopUp();
+		StartGameOrNotPopUp();
 		overallGameActions();
 	}
 
@@ -231,7 +231,7 @@ public class NumericTicTacToe{
 	 * is about to be played. This pop-up gives a user an option to play the game
 	 * (yes button being pressed) or not play the game (no or cancel buttons being pressed).
 	 */
-	public static void StartOrNotPopUp()
+	public static void StartGameOrNotPopUp()
 	{
 		final JFrame frame = new JFrame("JOptionPane Demo");
 		int i = JOptionPane.showOptionDialog(frame,
@@ -297,7 +297,7 @@ public class NumericTicTacToe{
 	 */
 	public static void gameEndOptions(int whichPlayerWon, int[][] board)
 	{
-
+		// This JFrame prompts a user on end of a game is they want to player again or not.
 		final JFrame frame = new JFrame("JOptionPane Demo");
 		if (whichPlayerWon == 0)
 		{
@@ -687,6 +687,8 @@ public class NumericTicTacToe{
 						for (int k = 0; k < 3; k++)
 							if (board[k][k] == 0)
 							{
+								// the board position is returned along with the number
+								// to win the game with (below).
 								int[] itelligentChosenEmptySquare = {k, k, number};
 								return itelligentChosenEmptySquare;
 							}
@@ -740,8 +742,11 @@ public class NumericTicTacToe{
 
 		do 
 		{
+			// Below: get a random number between 1 and 9 (inclusive), checked later.
 			number = random.nextInt(9) + 1;
 		}
+		// This whole do while loop prevents a number that has already been used by the computer
+		// or a number that is not odd from being used by the computer.
 		while (number % 2 == 0 || hasANumberBeenUsed(board, number));
 
 		return number;
