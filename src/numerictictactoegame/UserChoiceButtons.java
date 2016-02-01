@@ -1,4 +1,4 @@
-package tictactoelab02;
+package numerictictactoegame;
 
 import java.awt.FlowLayout;
 

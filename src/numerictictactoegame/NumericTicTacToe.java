@@ -1,6 +1,4 @@
-package tictactoelab02;
-
-import tictactoelab02.StdDraw;
+package numerictictactoegame;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -9,12 +7,17 @@ import java.util.Random;
 import javax.swing.JOptionPane;
 import javax.swing.JFrame;
 
+import numerictictactoegame.StdDraw;
+
 /**
+ * Module: Data Structures.
+ * 
  * This class (with the help of the StdDraw class,) allows a user to play a game
  * of Numeric Tic-Tac-Toe using Swing GUI. (exclusively a player vs. computer game).
  * 
  * The real-life player can only input the even numbers between 1-9 on their turn
- * and the computer can only place the odd numbers on the board between 1-9.
+ * (there is checks to make sure of this) and the computer can only place the odd
+ * numbers on the board between 1-9.
  * 
  * The first move is an odd number being placed somewhere randomly on the board.
  * 
@@ -28,7 +31,7 @@ import javax.swing.JFrame;
  * @author Adam Buckley (Student I.D: 20062910).
  * @version 1.
  * @date First coded: 25/01/2016.
- * @date Last edited: 01/02/2016.
+ * @date Last modified: 01/02/2016.
  */
 
 public class NumericTicTacToe{
@@ -48,6 +51,12 @@ public class NumericTicTacToe{
 
 	public static void main(String[] args) 
 	{
+		StartOrNotPopUp();
+		overallGameActions();
+	}
+
+	public static void overallGameActions()
+	{
 		// Allocate identifiers to represent game state
 		// Using an array of int so that summing along a row, a column or a
 		// diagonal is a easy test for a win
@@ -55,11 +64,12 @@ public class NumericTicTacToe{
 
 		int[][] board = new int[3][3];
 
-		//array of booleans, the 5 usable numbers for the computer. The default value for a boolean (primitive) is false.
+		// array of booleans, the 5 usable numbers for the computer. The default value for a boolean (primitive) is always false.
+		// Note: false = unused. true = already used on board.
 		boolean[] booleanArray = new boolean[5];
 
 		boolean[] humanBooleanArray = new boolean[4];
-		// The default value for a boolean (primitive) is false. false = unused. true = already used on board.
+		// The default value for a boolean (primitive) always is false. false = unused. true = already used on board.
 
 		int row = 0;
 		int col = 0;
@@ -520,7 +530,7 @@ public class NumericTicTacToe{
 		booleanArray[(number-1)/(2)] = false;
 		return number;
 	}
-	
+
 	/**
 	 * This method returns a position for a square
 	 * for the computer to block a real-life user win.

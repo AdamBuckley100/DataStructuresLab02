@@ -1,4 +1,4 @@
-package tictactoelab02;
+package numerictictactoegame;
 /******************************************************************************
  *  Compilation:  javac StdDraw.java
  *  Execution:    java StdDraw
