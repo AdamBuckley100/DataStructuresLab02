@@ -43,9 +43,9 @@ public class NumericTicTacToe{
 	final static Random random = new Random();
 
 	//array of booleans, the 5 usable numbers for the computer.
-	boolean[] booleanArray = new boolean[5];
+	//boolean[] booleanArray = new boolean[5];
 
-	boolean[] humanBooleanArray = new boolean[4];
+	//boolean[] humanBooleanArray = new boolean[4];
 
 	public static void main(String[] args) 
 	{
@@ -53,6 +53,12 @@ public class NumericTicTacToe{
 		overallGameActions();
 	}
 
+	/**
+	 * This contains the execution of the actual game itself.
+	 * This method is always called in the main method and if
+	 * a user decides to play again then this method is called again
+	 * via the gameEndOptions() method).
+	 */
 	public static void overallGameActions()
 	{
 		// Allocate identifiers to represent game state
@@ -673,9 +679,7 @@ public class NumericTicTacToe{
 	public static int[] computerToBlock(boolean humanBooleanArray[], int board[][])
 	{
 		{
-			// Below: because there is 5 options for the computer.
-			// (obviously one value in this array will already be true after the first number
-			// is placed on the board on the initial turn.
+			// Below: because there is 4 options for the human.
 			for (int i = 0; i < 4; i++)
 			{
 				// Below: check: if the position in the array (from 0 to 4). If the particular value in
@@ -734,9 +738,9 @@ public class NumericTicTacToe{
 				for (int col = 0; col < 3; col++)
 				{
 					// Below: check to see if exactly 1 of the squares is empty and two are occupied
-					if ((board[0][col] == 0 && board[1][col] != 0 && board[2][col] !=0)
-							|| (board[0][col] != 0 && board[1][col] == 0 && board[2][col] !=0)
-							|| (board[0][col] != 0 && board[1][col] != 0 && board[2][col] ==0))
+					if ((board[0][col] == 0 && board[1][col] != 0 && board[2][col] != 0)
+							|| (board[0][col] != 0 && board[1][col] == 0 && board[2][col] != 0)
+							|| (board[0][col] != 0 && board[1][col] != 0 && board[2][col] == 0))
 					{
 						int sum = board[0][col] + board[1][col] + board[2][col];
 
